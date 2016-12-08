@@ -295,10 +295,12 @@ public class TileEntityMEBridge extends MountedTileEntity implements IActionHost
 		int meta = stack.getItemDamage();
 		long amount = stack.getStackSize();
 		String displayName = stack.getItemStack().getDisplayName();
+		int maxAmount = stack.getItemStack().getMaxStackSize();
 		map.put("name", itemName);
 		map.put("meta", meta);
 		map.put("amount", amount);
 		map.put("displayName", displayName);
+		map.put("maxAmount", maxAmount);
 		if (flag == 0) {
 			return map;
 		} else if (flag == 1) {
