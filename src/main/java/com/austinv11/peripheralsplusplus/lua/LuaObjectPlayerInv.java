@@ -157,10 +157,12 @@ public class LuaObjectPlayerInv implements ILuaObject {
         int meta = stack.getItemDamage();
         long amount = stack.stackSize;
         String displayName = stack.getDisplayName();
+        int maxAmount = stack.getMaxStackSize();
         map.put("name", itemName);
         map.put("meta", meta);
         map.put("amount", amount);
         map.put("displayName", displayName);
+        map.put("maxAmount", maxAmount);
         return map;
     }
 
