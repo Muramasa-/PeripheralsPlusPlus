@@ -47,6 +47,16 @@ public class LuaObjectPlayerInv implements ILuaObject {
                 }
                 break;
             case 1:
+            case 2:
+                if (arguments.length != 1) {
+                    throw new LuaException("Wrong number of arguments. 1 expected.");
+                }
+                if (!(arguments[0] instanceof Double)) {
+                    throw new LuaException("Bad argument #1 (expected number)");
+                }
+                IInventory IInv = method == 1 ? getInputInventory() : getOutputInventory();
+                return new Object[] {getObjectFromStack(IInv.getStackInSlot(((Double) arguments[0]).intValue()))};
+            case 3:
                 if (arguments.length != 2) {
                     throw new LuaException("Wrong number of arguments. 2 expected.");
                 }
@@ -76,7 +86,7 @@ public class LuaObjectPlayerInv implements ILuaObject {
                     return new Object[]{true};
                 }
                 break;
-            case 2:
+            case 4:
                 if (arguments.length != 3) {
                     throw new LuaException("Wrong number of arguments. 3 expected.");
                 }
@@ -104,7 +114,7 @@ public class LuaObjectPlayerInv implements ILuaObject {
                     }
                 }
                 break;
-            case 3:
+            case 5:
                 if (arguments.length != 2) {
                     throw new LuaException("Wrong number of arguments. 2 expected.");
                 }
@@ -129,7 +139,7 @@ public class LuaObjectPlayerInv implements ILuaObject {
                     }
                 }
                 break;
-            case 4:
+            case 6:
                 if (hasGetStacksPermission())
                 {
                     return new Object[]{inv.getSizeInventory()};
@@ -142,7 +152,7 @@ public class LuaObjectPlayerInv implements ILuaObject {
 
     @Override
     public String[] getMethodNames() {
-        return new String[]{"getStackInSlot", "retrieveFromSlot", "pushToSlot", "push", "getSize"};
+        return new String[]{"getStackInSlot", "getStackInInputSlot", "getStackInOutputSlot", "retrieveFromSlot", "pushToSlot", "push", "getSize"};
     }
 
     private Object getObjectFromStack(ItemStack stack) {
