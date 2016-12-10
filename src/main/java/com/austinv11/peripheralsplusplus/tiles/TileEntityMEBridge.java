@@ -312,8 +312,11 @@ public class TileEntityMEBridge extends MountedTileEntity implements IActionHost
 			if (stack.isCraftable())
 				return map;
 		} else if (flag == 3) {
-			map.put("ore", getOreTagList(stack));
-			return map;
+			HashMap<Integer, String> oreTags = getOreTagList(stack);
+			if (oreTags.size() > 0) {
+				map.put("ore", getOreTagList(stack));
+				return map;
+			}
 		}
 		return null;
 	}
@@ -323,7 +326,7 @@ public class TileEntityMEBridge extends MountedTileEntity implements IActionHost
 		int[] oreIds = OreDictionary.getOreIDs(stack.getItemStack());
 		if (oreIds.length > 0) {
 			for (int i = 0; i < oreIds.length; i++) {
-				oreTags.put(i, OreDictionary.getOreName(oreIds[i]));
+				oreTags.put(i + 1, OreDictionary.getOreName(oreIds[i]));
 			}
 		}
 		return oreTags;
