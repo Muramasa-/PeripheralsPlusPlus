@@ -88,7 +88,7 @@ public class TileEntityMEBridge extends MountedTileEntity implements IActionHost
 
 	@Override
 	public String[] getMethodNames() {
-		return new String[]{"listAll", "listItems", "listCraft", "retrieve", "craft"};
+		return new String[]{"listAll", "listItems", "listCraft", "listOre", "retrieve", "craft"};
 	}
 
 	@Override
@@ -105,6 +105,8 @@ public class TileEntityMEBridge extends MountedTileEntity implements IActionHost
 			case 2:
 				return new Object[]{iteratorToMap(monitor.getStorageList().iterator(), 2)};
 			case 3:
+				return new Object[]{iteratorToMap(monitor.getStorageList().iterator(), 3)};
+			case 4:
 				ForgeDirection dir;
 				if (arguments.length < 3)
 					throw new LuaException("Too few arguments");
@@ -165,7 +167,7 @@ public class TileEntityMEBridge extends MountedTileEntity implements IActionHost
 					}
 				}
 				return new Object[]{extracted};
-			case 4:
+			case 5:
 				if (arguments.length < 2)
 					throw new LuaException("Too few arguments");
 				if (!(arguments[0] instanceof String))
@@ -309,10 +311,24 @@ public class TileEntityMEBridge extends MountedTileEntity implements IActionHost
 		} else if (flag == 2) {
 			if (stack.isCraftable())
 				return map;
+		} else if (flag == 3) {
+			map.put("ore", getOreTagList(stack));
+			return map;
 		}
 		return null;
 	}
 
+	private HashMap<Integer, String> getOreTagList(IAEItemStack stack) {
+		HashMap<Integer, String> oreTags = new HashMap<Integer, String>();
+		int[] oreIds = OreDictionary.getOreIDs(stack.getItemStack());
+		if (oreIds.length > 0) {
+			for (int i = 0; i < oreIds.length; i++) {
+				oreTags.put(i, OreDictionary.getOreName(oreIds[i]));
+			}
+		}
+		return oreTags;
+	}
+	
 	private IGridNode getNode() {
 		if (worldObj == null || worldObj.isRemote)
 			return null;
